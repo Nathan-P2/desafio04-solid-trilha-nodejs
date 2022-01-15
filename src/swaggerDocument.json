@@ -1,0 +1,326 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User API",
+        "description": "API for User creation and management",
+        "contact": {
+            "name": "Nathan Pereira",
+            "email": "nathan.pereira0201@gmail.com",
+            "url": "https://www.nathanpereira.com.br"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new user",
+                "produces": [
+                    "application/json"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Nathan Pereira",
+                                    "email": "nathan.pereira0201@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "uuid",
+                                            "example": "832e703c-3467-4d0f-8ae7-b6a1b19463ef"
+                                        },
+                                        "created_at": {
+                                            "type": "datetime",
+                                            "example": "2022-01-15T04:11:43.537Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "datetime",
+                                            "example": "2022-01-15T04:11:43.537Z"
+                                        },
+                                        "admin": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Nathan Pereira"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "nathan.pereira0201@gmail.com"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "When new user already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "User with email already exists"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Return all users",
+                "tags": [
+                    "users"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string ($uuid)"
+                        },
+                        "name": "user_id"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List all users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "uuid",
+                                                "example": "832e703c-3467-4d0f-8ae7-b6a1b19463ef"
+                                            },
+                                            "created_at": {
+                                                "type": "datetime",
+                                                "example": "2022-01-15T04:11:43.537Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "datetime",
+                                                "example": "2022-01-15T04:11:43.537Z"
+                                            },
+                                            "admin": {
+                                                "type": "boolean",
+                                                "example": "false"
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Nathan Pereira"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "nathan.pereira0201@gmail.com"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "When the user does not have permission to list all users OR when user does not exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "User does not have permission to list all users OR user does not exist"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/:user_id/admin": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Turn an user into an admin",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string ($uuid)"
+                        },
+                        "name": "user_id",
+                        "description": "User UUID"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User turned into an admin",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "uuid",
+                                            "example": "832e703c-3467-4d0f-8ae7-b6a1b19463ef"
+                                        },
+                                        "created_at": {
+                                            "type": "datetime",
+                                            "example": "2022-01-15T04:11:43.537Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "datetime",
+                                            "example": "2022-01-15T04:11:43.537Z"
+                                        },
+                                        "admin": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Nathan Pereira"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "nathan.pereira0201@gmail.com"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "When user does not exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "User with id does not exists"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/:user_id": {
+            "get": {
+                "tags": ["users"],
+                "summary": "List an user profile",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "required": true,
+                        "type": "string",
+                        "schema": {
+                            "type": "string ($uuid)"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return the user profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "uuid",
+                                            "example": "832e703c-3467-4d0f-8ae7-b6a1b19463ef"
+                                        },
+                                        "created_at": {
+                                            "type": "datetime",
+                                            "example": "2022-01-15T04:11:43.537Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "datetime",
+                                            "example": "2022-01-15T04:11:43.537Z"
+                                        },
+                                        "admin": {
+                                            "type": "boolean",
+                                            "example": "false"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Nathan Pereira"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "nathan.pereira0201@gmail.com"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "When user does not exist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "User with id does not exists"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
