@@ -14,7 +14,12 @@ class TurnUserAdminUseCase {
     const user = users.find((user) => user.id === user_id);
 
     if (!user) {
-      throw new Error(`User ${user_id} not found`);
+      throw new Error(
+        JSON.stringify({
+          status: 404,
+          message: `User ${user_id} not found`,
+        })
+      );
     }
 
     user.admin = true;

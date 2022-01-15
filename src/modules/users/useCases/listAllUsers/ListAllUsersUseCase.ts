@@ -14,9 +14,19 @@ class ListAllUsersUseCase {
     const user = users.find((user) => user.id === user_id);
 
     if (!user) {
-      throw new Error(`User ${user_id} does not exist`);
+      throw new Error(
+        JSON.stringify({
+          status: 400,
+          message: `User ${user_id} does not exist`,
+        })
+      );
     } else if (!user.admin) {
-      throw new Error(`User ${user_id} is not admin`);
+      throw new Error(
+        JSON.stringify({
+          status: 400,
+          message: `User ${user_id} is not admin`,
+        })
+      );
     }
 
     return users;
